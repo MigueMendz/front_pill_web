@@ -10,9 +10,7 @@ import MedicationCalendar from "../Components/Home/MedicationCalendar";
 
 function Dashboard() {
   const [alertActive, setAlertActive] = useState(false);
-  const [alertProcessed, setAlertProcessed] = useState(false); // Estado para controlar si ya se procesó la alerta
   const alertSound = useRef(null); // Usamos useRef para mantener la instancia del sonido
-  const intervalRef = useRef(null); // Usamos useRef para guardar el ID del intervalo
 
   useEffect(() => {
     // Crear el sonido solo una vez al montar el componente
@@ -21,18 +19,17 @@ function Dashboard() {
   }, []);
 
   useEffect(() => {
+    let intervalId;
+
     const fetchData = async () => {
       try {
-        if (alertProcessed) return; // Si ya se procesó la alerta, no continuar
-
-        const response = await axios.get("http://54.163.130.107:3000/alerts");
+        const response = await axios.get("http://54.163.130.107:3000/alerts"); // Cambia la URL por la adecuada
         const data = response.data;
         console.log("Datos de la API ALERTS:", data);
 
         if (data.event === "boton alerta precionado" && !alertActive && alertSound.current) {
           setAlertActive(true);
-          setAlertProcessed(true); // Marcar la alerta como procesada
-
+          
           // Asegúrate de que el sonido esté cargado y listo
           alertSound.current.play();
 
@@ -51,30 +48,23 @@ function Dashboard() {
             }
             setAlertActive(false); // Reiniciar estado de alerta
           });
-
-          // Detener el intervalo después de procesar la alerta
-          if (intervalRef.current) {
-            clearInterval(intervalRef.current);
-          }
         }
       } catch (error) {
         console.error("Error al obtener los datos:", error);
       }
     };
 
-    // Configurar el intervalo para llamar a fetchData
-    intervalRef.current = setInterval(fetchData, 5000);
+    // Ejecutar la función fetchData cada 5 segundos para obtener datos de la API
+    intervalId = setInterval(fetchData, 5000); // Intervalo de 5 segundos
 
     // Limpiar el intervalo y detener el sonido al desmontar el componente
     return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
+      clearInterval(intervalId);
       if (alertSound.current) {
         alertSound.current.pause();
       }
     };
-  }, [alertActive, alertProcessed]); // Dependencias: alerta activa y procesada
+  }, [alertActive]); // Dependencias: alerta activa
 
   return (
     <div className="flex min-h-screen bg-gray-50 text-gray-800">
