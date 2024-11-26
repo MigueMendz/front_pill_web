@@ -31,7 +31,7 @@ function SignupForm() {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:8083/auth/register", formData);
+      const response = await axios.post("https://back-pillcare.zapto.org/auth/register", formData);
       // Manejar la respuesta de la API
       console.log("Respuesta del servidor:", response.data);
       navigate("/pacientRegister");  // Redirige a la página del dashboard u otra ruta

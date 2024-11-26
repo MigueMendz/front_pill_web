@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
+import axios from "axios";
+import Swal from "sweetalert2";
 import Header from "../Components/Home/Header";
 import Slidebar from "../Components/Home/Slidebar";
 import InfoCards from "../Components/Home/InfoCards";
@@ -7,14 +9,79 @@ import LatestTransactions from "../Components/Home/LatestTransactions";
 import MedicationCalendar from "../Components/Home/MedicationCalendar";
 
 function Dashboard() {
+  const [alertActive, setAlertActive] = useState(false);
+  const [alertProcessed, setAlertProcessed] = useState(false); // Estado para controlar si ya se procesó la alerta
+  const alertSound = useRef(null); // Usamos useRef para mantener la instancia del sonido
+  const intervalRef = useRef(null); // Usamos useRef para guardar el ID del intervalo
+
+  useEffect(() => {
+    // Crear el sonido solo una vez al montar el componente
+    alertSound.current = new Audio("/sounds/alert.mp4");
+    alertSound.current.loop = true;
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (alertProcessed) return; // Si ya se procesó la alerta, no continuar
+
+        const response = await axios.get("http://54.163.130.107:3000/alerts");
+        const data = response.data;
+        console.log("Datos de la API ALERTS:", data);
+
+        if (data.event === "boton alerta precionado" && !alertActive && alertSound.current) {
+          setAlertActive(true);
+          setAlertProcessed(true); // Marcar la alerta como procesada
+
+          // Asegúrate de que el sonido esté cargado y listo
+          alertSound.current.play();
+
+          Swal.fire({
+            title: "¡Ayuda urgente requerida!",
+            text: "El paciente necesita ayuda inmediata.",
+            icon: "warning",
+            confirmButtonText: "Entendido",
+            background: "#fff",
+            backdrop: "rgba(0, 0, 0, 0.4)",
+          }).then(() => {
+            // Detener el sonido al confirmar la alerta
+            if (alertSound.current) {
+              alertSound.current.pause();
+              alertSound.current.currentTime = 0; // Reiniciar el sonido
+            }
+            setAlertActive(false); // Reiniciar estado de alerta
+          });
+
+          // Detener el intervalo después de procesar la alerta
+          if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+          }
+        }
+      } catch (error) {
+        console.error("Error al obtener los datos:", error);
+      }
+    };
+
+    // Configurar el intervalo para llamar a fetchData
+    intervalRef.current = setInterval(fetchData, 5000);
+
+    // Limpiar el intervalo y detener el sonido al desmontar el componente
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+      if (alertSound.current) {
+        alertSound.current.pause();
+      }
+    };
+  }, [alertActive, alertProcessed]); // Dependencias: alerta activa y procesada
+
   return (
     <div className="flex min-h-screen bg-gray-50 text-gray-800">
       <Slidebar />
 
       <div className="flex-1 p-6">
-          <Header />
-         
-       
+        <Header />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="space-y-4">

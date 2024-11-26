@@ -65,7 +65,7 @@ function PacientRegister() {
 
     try {
       // Enviar datos del paciente a la API correspondiente
-      const patientResponse = await axios.post('http://localhost:8083/patients/add', patientData);
+      const patientResponse = await axios.post('https://back-pillcare.zapto.org/patients/add', patientData);
       console.log('Paciente registrado:', patientResponse.data);
 
       // Mostrar modal de éxito

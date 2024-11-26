@@ -32,7 +32,7 @@ function MedicineForm({ isEditing, onScanRfid }) {
 
   const handleScanRfid = async () => {
     try {
-      const response = await axios.get("http://localhost:8083/medicines/pending-rfids", config);
+      const response = await axios.get("https://back-pillcare.zapto.org/medicines/pending-rfids", config);
       
       // Verificar la estructura de la respuesta recibida
       console.log("Respuesta recibida del backend (sin parsear):", response.data);
@@ -56,7 +56,7 @@ function MedicineForm({ isEditing, onScanRfid }) {
   
   const handleSave = async () => {
     try {
-      const response = await axios.post("http://localhost:8083/medicines/add", form, config);
+      const response = await axios.post("https://back-pillcare.zapto.org/medicines/add", form, config);
       alert("Medicamento agregado con éxito");
       console.log(response.data);
     } catch (error) {

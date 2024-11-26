@@ -21,7 +21,7 @@ function ProfileCard({ progress }) {
     // Función para obtener los datos del paciente
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8083/patients/get/user/${idUsuario}`, config);
+        const response = await axios.get(`https://back-pillcare.zapto.org/patients/get/user/${idUsuario}`, config);
         console.log("Datos recibidos del backend:", response.data);
         if (response.data) {
           localStorage.setItem("id_paciente_home", response.data.id_paciente);

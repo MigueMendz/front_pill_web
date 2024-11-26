@@ -23,7 +23,7 @@ function MedicationSchedule() {
 
         // Realizar la solicitud GET
         const response = await axios.get(
-          `http://localhost:8083/medicines/patient/${patientId}`,
+          `https://back-pillcare.zapto.org/medicines/patient/${patientId}`,
           config
         );
 

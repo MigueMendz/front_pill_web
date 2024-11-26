@@ -60,7 +60,7 @@ function Header() {
             {login_nombre}
           </Link>
           <img
-            src="https://via.placeholder.com/40"
+            src="/fotoo.png"
             alt="Profile"
             className="w-10 h-10 rounded-full"
           />

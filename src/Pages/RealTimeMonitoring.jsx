@@ -20,7 +20,7 @@ function RealTimeMonitoring() {
     const fetchMedicines = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8083/medicines/patient/${patientId}`, config
+          `https://back-pillcare.zapto.org/medicines/patient/${patientId}`, config
         );
 
         const sortedMedicines = response.data.sort((a, b) => {

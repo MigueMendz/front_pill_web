@@ -18,7 +18,7 @@ function InfoCards() {
 
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8083/patients/get/user/${idUsuario}`, config);
+        const response = await axios.get(`https://back-pillcare.zapto.org/patients/get/user/${idUsuario}`, config);
         console.log("response",response)
         localStorage.setItem("id_paciente_home", response.data.id_paciente);
         setUserInfo(response.data); 
@@ -35,7 +35,7 @@ function InfoCards() {
   }, [idUsuario]);
 
   const info = [
-    { title: "Paciente", illness: userInfo?.condicion || "No especificada", image: "https://via.placeholder.com/100" },
+    { title: "Paciente", illness: userInfo?.condicion || "No especificada", image: "/fotoo.png" },
   ];
 
   return (

@@ -44,7 +44,7 @@ function UserSettings() {
 
     try {
       const response = await axios.put(
-        `http://localhost:8083/auth/update/${login_id}`, formData, config,
+        `https://back-pillcare.zapto.org/auth/update/${login_id}`, formData, config,
         {
           nombre: formData.fullName,
           direccion_Email: formData.email,
