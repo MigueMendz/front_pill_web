@@ -17,22 +17,25 @@ function Dashboard() {
     alertSound.current = new Audio("/sounds/alert.mp4");
     alertSound.current.loop = true;
   }, []);
-
   useEffect(() => {
     let intervalId;
-
+  
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://54.163.130.107:3000/alerts/consume"); // Cambia la URL por la adecuada
-        const data = response.data;
+        const response = await axios.get("http://54.163.130.107:3000/alerts/consume");
+        const data = response.data; // Accedemos al "data" que contiene los datos reales de la API
+  
         console.log("Datos de la API ALERTS:", data);
-
-        if (data.event === "boton alerta precionado" && !alertActive && alertSound.current) {
+  
+        // Acceder al valor de 'alert' dentro de la respuesta
+        const alertValue = data.alert; // Aquí tomamos el valor de 'alert'
+  
+        if (alertValue === 1 && !alertActive && alertSound.current) {
           setAlertActive(true);
-          
+  
           // Asegúrate de que el sonido esté cargado y listo
           alertSound.current.play();
-
+  
           Swal.fire({
             title: "¡Ayuda urgente requerida!",
             text: "El paciente necesita ayuda inmediata.",
