@@ -23,7 +23,7 @@ function Dashboard() {
 
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://54.163.130.107:3000/alerts"); // Cambia la URL por la adecuada
+        const response = await axios.get("http://54.163.130.107:3000/alerts/consume"); // Cambia la URL por la adecuada
         const data = response.data;
         console.log("Datos de la API ALERTS:", data);
 
