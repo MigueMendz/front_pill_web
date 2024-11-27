@@ -22,7 +22,7 @@ function Dashboard() {
   
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://54.163.130.107:3000/alerts/consume");
+        const response = await axios.get("https://back-pillcare.zapto.org/mini-api/alerts/consume");
         const data = response.data; // Accedemos al "data" que contiene los datos reales de la API
   
         console.log("Datos de la API ALERTS:", data);
