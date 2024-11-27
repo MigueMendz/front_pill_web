@@ -34,15 +34,13 @@ function MedicineForm({ isEditing, onScanRfid }) {
     try {
       const response = await axios.get("https://back-pillcare.zapto.org/medicines/pending-rfids", config);
       
-      // Verificar la estructura de la respuesta recibida
-      console.log("Respuesta recibida del backend (sin parsear):", response.data);
+      // Trabaja directamente con el objeto JSON
+      console.log("Respuesta recibida del backend:", response.data);
   
-      // Parsear la respuesta ya que es una cadena de texto JSON
-      const parsedData = JSON.parse(response.data);
-      
       // Extraer el valor de 'id_medicamento_rfid'
-      if (parsedData && parsedData.id_medicamento_rfid) {
-        const id_medicamento_rfid = parsedData.id_medicamento_rfid;
+      const id_medicamento_rfid = response.data.id_medicamento_rfid;
+      
+      if (id_medicamento_rfid) {
         setForm({ ...form, id_medicamento_rfid });
         alert(`RFID escaneado: ${id_medicamento_rfid}`);
       } else {
@@ -53,6 +51,8 @@ function MedicineForm({ isEditing, onScanRfid }) {
       alert("Hubo un error al escanear el RFID. Revisa la consola para más detalles.");
     }
   };
+  
+  
   
   const handleSave = async () => {
     try {
